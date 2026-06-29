@@ -12,6 +12,7 @@ This is a modified version of the built-in Vizio integration that is actively ma
 ## Features
 
 - **Full Media Player Support**: Control your VIZIO SmartCast TV or Soundbar
+- **Official Remote Entity Support**: Send VIZIO remote key commands through Home Assistant's `remote` platform
 - **App Management**: Launch and control SmartCast apps
 - **Volume Control**: Precise volume control with configurable step size
 - **Input Selection**: Switch between HDMI inputs and SmartCast apps
@@ -72,6 +73,26 @@ The integration provides standard media player controls:
 - **Select Source**: Switch between inputs and apps
 - **Play/Pause**: Control media playback
 - **Channel Up/Down**: Navigate channels (TVs only)
+
+### Remote Entity
+
+This integration also implements the official Home Assistant VIZIO integration's Remote entity capabilities. Each configured VIZIO device exposes a `remote` entity that can:
+
+- Turn the device on and off
+- Send supported VIZIO remote key commands
+- Repeat commands with Home Assistant's standard `num_repeats` and `delay_secs` options
+
+Example remote command:
+
+```yaml
+service: remote.send_command
+target:
+  entity_id: remote.vizio_tv_remote
+data:
+  command:
+    - MENU
+    - OK
+```
 
 ### Voice Commands
 
@@ -137,6 +158,22 @@ automation:
           volume_level: 0.3
 ```
 
+**Send a remote command:**
+
+```yaml
+automation:
+  - alias: "Open VIZIO menu"
+    trigger:
+      - platform: state
+        entity_id: input_button.open_vizio_menu
+    action:
+      - service: remote.send_command
+        target:
+          entity_id: remote.vizio_tv_remote
+        data:
+          command: MENU
+```
+
 ## Troubleshooting
 
 ### Device Not Discovered
@@ -180,6 +217,7 @@ automation:
 
 ### 2025.11.9b1 (Pre-release)
 
+- Added support for the official Home Assistant VIZIO Remote entity capabilities
 - Fixed deprecation warning for OptionsFlow config_entry handling (compatible with Home Assistant 2025.12+)
 - Fixed KeyError when volume information is not available in audio settings
 - Improved error handling for missing device data
