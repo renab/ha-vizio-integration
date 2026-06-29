@@ -13,7 +13,7 @@ from homeassistant.helpers.storage import Store
 from .const import CONF_APPS, DOMAIN
 from .coordinator import VizioAppsDataUpdateCoordinator
 
-PLATFORMS = [Platform.MEDIA_PLAYER]
+PLATFORMS = [Platform.MEDIA_PLAYER, Platform.REMOTE]
 
 
 async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
